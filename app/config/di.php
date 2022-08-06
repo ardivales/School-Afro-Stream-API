@@ -74,5 +74,5 @@ $di->set('schema', function () {
 });
 
 /** Service to perform operations with the Students */
-//$di->setShared('students_service', '\App\Services\StudentsService');
+$di->setShared('students_service', '\App\Services\StudentsService');
 return $di;
