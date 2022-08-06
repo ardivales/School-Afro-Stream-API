@@ -182,6 +182,27 @@ class StudentsService {
 	}
 
 	/**
+	 * GET ALL STUDENTS
+	 * @return array
+	 *
+	 */
+	public function get_all()
+	{
+		$students_info = [];
+		$students = Students::find();
+		if (!empty($students)) {
+			foreach ($students as $student) {
+				$students_info[] = $this->get_object_to_array($student);
+			}
+		}
+		$output = [];
+		$output["status"] = "success";
+		$output["message"] = "Liste des étudiants.";
+		$output["students_info"] = $students_info;
+		return $output;
+	}
+
+	/**
 	 * @param $student
 	 *
 	 * @return array

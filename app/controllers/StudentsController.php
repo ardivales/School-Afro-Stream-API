@@ -212,7 +212,7 @@ class StudentsController extends AbstractController {
 	}
 
 	/**
-	 * Enable disable action.
+	 * DELETE STUDENT
 	 *
 	 * @param type $json_data The json data.
 	 * @return type $output The output.
@@ -234,6 +234,12 @@ class StudentsController extends AbstractController {
 		}
 	}
 
+	/**
+	 * Get STUDENT BY ID
+	 * @param $student_id
+	 *
+	 * @return void
+	 */
 	public function get_by_id_action($student_id)
 	{
 		//Init Block.
@@ -245,6 +251,22 @@ class StudentsController extends AbstractController {
 		//Passing to business logic and preparing the response.
 		try {
 			$output = $this->students_service->get_by_id($data);
+			return $output;
+		} catch (ServiceException $e) {
+			$this->handle_exceptions($e);
+		}
+	}
+
+	/**
+	 * Get ALL STUDENT action.
+	 *
+	 * @param type $json_data The json data.
+	 * @return type $output The output.
+	 */
+	public function get_all_action()
+	{
+		try {
+			$output = $this->students_service->get_all();
 			return $output;
 		} catch (ServiceException $e) {
 			$this->handle_exceptions($e);
