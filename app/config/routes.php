@@ -6,6 +6,7 @@ $students_collection->setHandler('\App\Controllers\StudentsController', true);
 $students_collection->setPrefix('/student');
 $students_collection->post('/add', 'add_action');
 $students_collection->put('/update', 'update_action');
+$students_collection->delete('/delete/{student_id:[1-9][0-9]*}', 'delete_action');
 $app->mount($students_collection);
 
 // not found URLs

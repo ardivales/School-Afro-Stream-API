@@ -6,6 +6,7 @@ use App\Services\ServiceException;
 use Phalcon\Validation;
 use Phalcon\Validation\Validator\Email;
 use Phalcon\Validation\Validator\PresenceOf;
+use Phalcon\Validation\Validator\Numericality;
 
 class StudentsController extends AbstractController {
 
@@ -74,6 +75,18 @@ class StudentsController extends AbstractController {
 
 		$validator->add(
 			[
+				"student_id"
+			], new Numericality(
+				[
+					"message" => [
+						"student_id" => "Le champ identifiant de l'étudiant n'est pas numérique.",
+					]
+				]
+			)
+		);
+
+		$validator->add(
+			[
 				"email"
 			], new Email(
 				[
@@ -82,6 +95,39 @@ class StudentsController extends AbstractController {
 				]
 			)
 		);
+		return $validator;
+	}
+
+	/**
+	 * Delete Student validator.
+	 *
+	 * @return Delete $validator The validator.
+	 */
+	public function set_validator_delete()
+	{
+		$validator = new Validation();
+		$validator->add([
+			"student_id",
+		], new PresenceOf([
+					"message" => [
+						"student_id" => "Le champ identifiant de l'étudiant est requis.",
+					]
+				]
+			)
+		);
+
+		$validator->add(
+			[
+				"student_id"
+			], new Numericality(
+				[
+					"message" => [
+						"student_id" => "Le champ identifiant de l'étudiant n'est pas numérique.",
+					]
+				]
+			)
+		);
+
 		return $validator;
 	}
 
@@ -125,6 +171,29 @@ class StudentsController extends AbstractController {
 		//Passing to business logic and preparing the response.
 		try {
 			$output = $this->students_service->update($data);
+			return $output;
+		} catch (ServiceException $e) {
+			$this->handle_exceptions($e);
+		}
+	}
+
+	/**
+	 * Enable disable action.
+	 *
+	 * @param type $json_data The json data.
+	 * @return type $output The output.
+	 */
+	public function delete_action($student_id)
+	{
+		//Init Block.
+		$data = ["student_id" => $student_id];
+
+		//Validation Block.
+		$this->validate($this->set_validator_delete(), $data);
+
+		//Passing to business logic and preparing the response.
+		try {
+			$output = $this->students_service->delete($data);
 			return $output;
 		} catch (ServiceException $e) {
 			$this->handle_exceptions($e);

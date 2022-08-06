@@ -14,6 +14,8 @@ class StudentsService {
 
 	const ERROR_UNABLE_UPDATE_STUDENT = 004;
 
+	const ERROR_DELETED_ACCOUNT = 005;
+
 	/**
 	 * @param array $data
 	 *
@@ -123,6 +125,38 @@ class StudentsService {
 	}
 
 	/**
+	 * Delete STUDENT.
+	 *
+	 * @param array $data The STUDENT data.
+	 * @return array $output The output.
+	 * @throws ServiceException The service exception.
+	 */
+	public function delete(array $data)
+	{
+		$student = Students::findFirst([
+			'conditions' => 'id=:id:',
+			'bind' => [
+				'id' => $data['student_id']
+			]
+		]);
+
+		if (!$student) {
+			throw new ServiceException("L'étudiant est introuvable.", self::ERROR_STUDENT_NOT_FOUND);
+		}
+
+		$result = $student->delete();
+
+		if (!$result) {
+			throw new ServiceException("Impossible de supprimer l'étudiant.", self::ERROR_DELETED_ACCOUNT);
+		} else {
+			$output = [];
+			$output["status"] = "success";
+			$output["message"] = "Etudiant supprimé avec succès.";
+			return $output;
+		}
+	}
+
+	/**
 	 * @param $student
 	 *
 	 * @return array
@@ -143,4 +177,5 @@ class StudentsService {
 		}
 		return $student_info;
 	}
+
 }
