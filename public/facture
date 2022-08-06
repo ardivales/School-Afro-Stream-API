@@ -1,0 +1,22 @@
+{
+            "facture": [{
+            "facture_id": "01",
+            "client_id": "03",
+            "nom": "SESSOU",
+            "adress": "Aibatin",
+            "telephone": "+22967668284",
+            "email": "sessgeraud@gmail.com",
+            "police_id": "0A32",
+            "product_name": "Automobile",
+            "company": "NSIA Assurances",
+            "avenant": "00001",
+            "effect": "test",
+            "echeance": "03-04-2024",
+            "net_price": "12000",
+            "accesory": "Chic",
+            "taxes": "2000",
+            "fga": "500",   
+            "price_ttc": "15000",
+            "price_letter": "quinze milles"
+        }]
+        }

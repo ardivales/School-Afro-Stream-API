@@ -1,6 +1,6 @@
-# Students
+# candidate_profile
 
-
+Candidature du profile
 
 ## Getting started
 
@@ -15,14 +15,14 @@ Already a pro? Just edit this README.md and make it your own. Want to make it ea
 
 ```
 cd existing_repo
-git remote add origin https://gitlab.com/ardiles/students.git
+git remote add origin https://gitlab.com/olympe99/candidate_profile.git
 git branch -M main
 git push -uf origin main
 ```
 
 ## Integrate with your tools
 
-- [ ] [Set up project integrations](https://gitlab.com/ardiles/students/-/settings/integrations)
+- [ ] [Set up project integrations](https://gitlab.com/olympe99/candidate_profile/-/settings/integrations)
 
 ## Collaborate with your team
 
