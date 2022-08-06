@@ -132,6 +132,40 @@ class StudentsController extends AbstractController {
 	}
 
 	/**
+	 * Get Student by ID
+	 *
+	 * @return Validation
+	 *
+	 */
+	public function set_validator_get_by_id()
+	{
+		$validator = new Validation();
+		$validator->add([
+			"student_id",
+		], new PresenceOf([
+					"message" => [
+						"student_id" => "Le champ identifiant du l'étudiant est requis.",
+					]
+				]
+			)
+		);
+
+		$validator->add(
+			[
+				"student_id"
+			], new Numericality(
+				[
+					"message" => [
+						"student_id" => "Le champ identifiant du l'étudiant n'est pas numérique.",
+					]
+				]
+			)
+		);
+
+		return $validator;
+	}
+
+	/**
 	 * CREATE USER ACTION.
 	 *
 	 * @param type $json_data The json data.
@@ -194,6 +228,23 @@ class StudentsController extends AbstractController {
 		//Passing to business logic and preparing the response.
 		try {
 			$output = $this->students_service->delete($data);
+			return $output;
+		} catch (ServiceException $e) {
+			$this->handle_exceptions($e);
+		}
+	}
+
+	public function get_by_id_action($student_id)
+	{
+		//Init Block.
+		$data = ["student_id" => $student_id];
+
+		//Validation Block.
+		$this->validate($this->set_validator_get_by_id(), $data);
+
+		//Passing to business logic and preparing the response.
+		try {
+			$output = $this->students_service->get_by_id($data);
 			return $output;
 		} catch (ServiceException $e) {
 			$this->handle_exceptions($e);

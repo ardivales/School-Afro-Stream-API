@@ -157,6 +157,31 @@ class StudentsService {
 	}
 
 	/**
+	 * Get Student By ID
+	 * @param array $data
+	 *
+	 * @return array
+	 */
+	public function get_by_id(array $data)
+	{
+		$student = Students::findFirst([
+			'conditions' => 'id=:id:',
+			'bind' => [
+				'id' => $data['student_id']
+			]
+		]);
+
+		if (!$student) {
+			throw new ServiceException("L'étudiant est introuvable.", self::ERROR_STUDENT_NOT_FOUND);
+		}
+		$output = [];
+		$output["status"] = "success";
+		$output["message"] = "Information de l'étudiant.";
+		$output["student_info"] = $this->get_object_to_array($student);
+		return $output;
+	}
+
+	/**
 	 * @param $student
 	 *
 	 * @return array

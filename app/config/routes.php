@@ -7,6 +7,7 @@ $students_collection->setPrefix('/student');
 $students_collection->post('/add', 'add_action');
 $students_collection->put('/update', 'update_action');
 $students_collection->delete('/delete/{student_id:[1-9][0-9]*}', 'delete_action');
+$students_collection->get('/get_by_id/{student_id:[1-9][0-9]*}', 'get_by_id_action');
 $app->mount($students_collection);
 
 // not found URLs
