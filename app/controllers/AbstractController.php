@@ -68,6 +68,8 @@ abstract class AbstractController extends \Phalcon\DI\Injectable
                 /* STUDENT */
             case StudentsService::ERROR_UNABLE_CREATE_STUDENT:
             case StudentsService::ERROR_EMAIL_ALREADY_USED:
+            case StudentsService::ERROR_STUDENT_NOT_FOUND:
+            case StudentsService::ERROR_UNABLE_UPDATE_STUDENT:
 
 
                 throw new Http422Exception($e->getMessage(), $e->getCode(), $e);

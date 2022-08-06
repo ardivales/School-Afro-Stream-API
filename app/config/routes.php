@@ -5,6 +5,7 @@ $students_collection = new \Phalcon\Mvc\Micro\Collection();
 $students_collection->setHandler('\App\Controllers\StudentsController', true);
 $students_collection->setPrefix('/student');
 $students_collection->post('/add', 'add_action');
+$students_collection->put('/update', 'update_action');
 $app->mount($students_collection);
 
 // not found URLs

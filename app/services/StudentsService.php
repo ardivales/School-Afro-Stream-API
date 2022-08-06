@@ -10,6 +10,10 @@ class StudentsService {
 
 	const ERROR_UNABLE_CREATE_STUDENT = 002;
 
+	const ERROR_STUDENT_NOT_FOUND = 003;
+
+	const ERROR_UNABLE_UPDATE_STUDENT = 004;
+
 	/**
 	 * @param array $data
 	 *
@@ -56,6 +60,73 @@ class StudentsService {
 		}
 	}
 
+	/**
+	 * Update STUDENT.
+	 *
+	 * @param array $data The STUDENT data.
+	 * @return array $output The output.
+	 * @throws ServiceException The service exception.
+	 */
+	public function update(array $data)
+	{
+		try {
+			$student = Students::findFirst([
+				"conditions" => "id=:student_id:",
+				"bind" => [
+					'student_id' => $data['student_id']
+				]
+			]);
+
+			if (!$student) {
+				throw new ServiceException('Impossible de trouver cet étudiant.', self::ERROR_STUDENT_NOT_FOUND);
+			}
+
+			$student_find_by_email = Students::findFirst([
+					"conditions" => "email = :email: AND id != :id:",
+					"bind" => [
+						'email' => $data['email'],
+						'id' => $data['student_id']
+					]
+				]
+			);
+
+			if ($student_find_by_email) {
+				throw new ServiceException("Cet email est déja utilisé pour un autre étudiant.", self::ERROR_EMAIL_ALREADY_USED);
+			}
+
+			$data['name'] = (is_null($data['name'])) ? $student->getName() : $data['name'];
+			$data['email'] = (is_null($data['email'])) ? $student->getEmail() : $data['email'];
+			$data['age'] = (is_null($data['age'])) ? $student->getAge() : $data['age'];
+			$data['address'] = (is_null($data['address'])) ? $student->getAddress() : $data['address'];
+			$data['classe'] = (is_null($data['classe'])) ? $student->getClasse() : $data['classe'];
+
+			$result = $student->setUpdatedAt(date('Y-m-d H:i:s'))
+			                  ->setClasse($data["classe"])
+			                  ->setAge($data["age"])
+			                  ->setAddress($data["address"])
+			                  ->setEmail($data["email"])
+			                  ->setName($data['name'])
+			                  ->update();
+
+			if (!$result) {
+				throw new ServiceException("Impossible de mettre à jour l'étudiant.", self::ERROR_UNABLE_UPDATE_STUDENT);
+			} else {
+				$output = [];
+				$output["status"] = "success";
+				$output["message"] = "Le compte de l'étudiant à bien été mise a jour.";
+				$output['student_info'] = $this->get_object_to_array($student);
+				return $output;
+			}
+		} catch (\PDOException $e) {
+			throw new ServiceException($e->getMessage(), 10001, $e);
+		}
+	}
+
+	/**
+	 * @param $student
+	 *
+	 * @return array
+	 */
 	public function get_object_to_array($student)
 	{
 		$student_info = array();
