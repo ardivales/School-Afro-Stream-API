@@ -9,9 +9,9 @@ return new \Phalcon\Config(
         'host' => 'localhost',
         'username' => 'root',
         'password' => '',
-        'dbname' => 'candidate_profile',
+        'dbname' => 'school',
         'charset' => 'utf8',
-        'schema' => 'candidate_profile'
+        'schema' => 'school'
     ],
     'application' => [
         'controllersDir' => "app/controllers/",
